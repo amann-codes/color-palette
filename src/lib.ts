@@ -12,6 +12,43 @@ type RGB = {
     b: number
 }
 
+function getTextColor(rgb: RGB) {
+    let redChannel = rgb.r / 255;
+    if (redChannel <= 0.04045) {
+        redChannel = redChannel / 12.92
+    }
+    else {
+        redChannel = ((redChannel + 0.055) / 1.055) ** 2.4
+    }
+    let greenChannel = rgb.g / 255;
+    if (greenChannel <= 0.04045) {
+        greenChannel = greenChannel / 12.92
+    }
+    else {
+        greenChannel = ((greenChannel + 0.055) / 1.055) ** 2.4
+    }
+    let blueChannel = rgb.b / 255;
+    if (blueChannel <= 0.04045) {
+        blueChannel = blueChannel / 12.92
+    }
+    else {
+        blueChannel = ((blueChannel + 0.055) / 1.055) ** 2.4
+    }
+    const luminance = 0.2126 * redChannel + 0.7152 * greenChannel + 0.0722 * blueChannel;
+    const whiteContrast = (1.0 + 0.05) / (luminance + 0.05)
+    const blackContrast = (luminance + 0.05) / (0.0 + 0.05)
+
+    let textColor = '#fff';
+    if (whiteContrast > blackContrast) {
+        return textColor;
+    }
+    else {
+        textColor = '#000'
+        return textColor;
+    }
+
+}
+
 function convertHSLtoRGBtoHEX(h: number, s: number, l: number) {
     const normalizedSaturation = s / 100;
     const normalizedLightness = l / 100;
@@ -38,6 +75,11 @@ function convertHSLtoRGBtoHEX(h: number, s: number, l: number) {
             r: 0, g: x, b: chroma
         }
     }
+    else if (h < 300) {
+        rgb = {
+            r: 0, g: x, b: chroma
+        }
+    }
     else {
         rgb = {
             r: chroma, g: 0, b: x
@@ -49,16 +91,17 @@ function convertHSLtoRGBtoHEX(h: number, s: number, l: number) {
         g: Number(((rgb.g + m) * 255).toFixed()),
         b: Number(((rgb.b + m) * 255).toFixed())
     }
+    const textColor = getTextColor(rgb);
     const hex = `#${(rgb.r).toString(16)}${(rgb.g).toString(16)}${(rgb.b).toString(16)}`
-    return hex
+    return { hex, textColor }
 }
 
-export function generateHEXPalette(): string[] {
+export function generateHEXPalette() {
     const hue = generateRange0to360()
     const saturation = generateRange0to60();
     const lightness = generateRange0to60();
 
-    let colors: string[] = [];
+    let colors = [];
     for (let i = 0; i < 5; i++) {
         colors.push(convertHSLtoRGBtoHEX(hue, saturation + i * 10, lightness + i * 10))
     }
