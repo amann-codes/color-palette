@@ -77,7 +77,7 @@ function convertHSLtoRGBtoHEX(h: number, s: number, l: number) {
     }
     else if (h < 300) {
         rgb = {
-            r: 0, g: x, b: chroma
+            r: x, g: 0, b: chroma
         }
     }
     else {
@@ -92,7 +92,19 @@ function convertHSLtoRGBtoHEX(h: number, s: number, l: number) {
         b: Number(((rgb.b + m) * 255).toFixed())
     }
     const textColor = getTextColor(rgb);
-    const hex = `#${(rgb.r).toString(16)}${(rgb.g).toString(16)}${(rgb.b).toString(16)}`
+    let redHex = rgb.r.toString(16)
+    let greenHex = rgb.g.toString(16)
+    let blueHex = rgb.b.toString(16)
+    if (redHex.length == 1) {
+        redHex = "0" + redHex
+    }
+    if (greenHex.length == 1) {
+        greenHex = "0" + greenHex
+    }
+    if (blueHex.length == 1) {
+        blueHex = "0" + blueHex
+    }
+    const hex = "#" + redHex + greenHex + blueHex
     return { hex, textColor }
 }
 
