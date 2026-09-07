@@ -95,13 +95,13 @@ function convertHSLtoRGBtoHEX(h: number, s: number, l: number) {
     let redHex = rgb.r.toString(16)
     let greenHex = rgb.g.toString(16)
     let blueHex = rgb.b.toString(16)
-    if (redHex.length == 1) {
+    if (redHex.length === 1) {
         redHex = "0" + redHex
     }
-    if (greenHex.length == 1) {
+    if (greenHex.length === 1) {
         greenHex = "0" + greenHex
     }
-    if (blueHex.length == 1) {
+    if (blueHex.length === 1) {
         blueHex = "0" + blueHex
     }
     const hex = "#" + redHex + greenHex + blueHex

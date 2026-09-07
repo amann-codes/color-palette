@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { generateHEXPalette } from "./lib"
-import Toast from "./Toast";
 import { ColorBlock } from "./colorBlock";
 
 export default function App() {
